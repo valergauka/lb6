@@ -1,0 +1,54 @@
+﻿@page "/delete/{id:int}"
+@using lb6.Data
+@inject ConversationServices conversationServices
+@inject NavigationManager navigationManager
+
+<h1>Delete conversation</h1>
+<EditForm Model="conversation" OnValidSubmit="DeleteC">
+	<InputNumber @bind-Value="conversation.Id" hidden />
+	<div class="form-group row">
+	  <label>Abonent</label>
+	  <div class="col-sm-8">
+		<InputText @bind-Value="conversation.Abonent.FirstName" disabled />
+	  </div>
+  </div>
+  <div class="form-group row">
+		<label>City</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="conversation.City.Name" disabled />
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>DateConversation</label>
+		<div class="col-sm-8">
+			<InputDate @bind-Value="conversation.DateConversation" disabled />
+		</div>
+  </div>
+  <div class="form-group row">
+		<label>Duration</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="conversation.Duration" disabled />
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Delete conversation</button>
+  </div>
+</EditForm>
+
+@code {
+	[Parameter] public int id{ get; set; }
+
+	private Conversation conversation = new Conversation();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		conversation = await conversationServices.GetConversation(id);
+		
+	}
+
+	private async Task DeleteC()
+	{
+		await conversationServices.Delete(conversation);
+		navigationManager.NavigateTo("/conversations");
+	}
+}

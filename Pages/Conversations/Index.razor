@@ -1,0 +1,47 @@
+﻿@page "/conversations"
+@using lb6.Data
+@inject ConversationServices conversationServices
+<h1>Conversations</h1>
+<a href="/conversation" class="btn btn-success">Create conversation</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Abonent</th>
+      <th scope="col">City</th>
+      <th scope="col">DateConversation</th>
+      <th scope="col">Duration</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+        @foreach(var conversation in conversations)
+        {
+            <tr>
+                <th scope="row">
+                    @conversation.Abonent.FirstName
+                </th>
+                <td>
+                    @conversation.City.Name
+                </td>
+                <td>
+                    @conversation.DateConversation
+                </td>
+                <td>
+                    @conversation.Duration
+                </td>
+                <td>
+                    <a href="delete/@conversation.Id" class="btn btn-danger">Delete conversation</a>
+                </td>
+            </tr>
+        }
+  </tbody>
+</table>
+
+@code {
+    List<Conversation> conversations = new List<Conversation>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		conversations = await conversationServices.GetConversations();
+	}
+}

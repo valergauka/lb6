@@ -1,0 +1,42 @@
+﻿@page "/city"
+@using lb6.Data
+@inject CityServices cityServices
+@inject NavigationManager navigationManager
+<h3>Create</h3>
+<EditForm Model="city" OnValidSubmit="CreateC">
+   <div class="form-group row">
+	  <label>Name</label>
+	  <div class="col-sm-8">
+		  <InputText @bind-Value="city.Name" />
+	  </div>
+  </div>
+  <div class="form-group row">
+		<label>Code</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="city.Code" />
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>Tariff</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="city.Tariff"/>
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Add city</button>
+  </div>
+</EditForm>
+@code {
+	private City city = new City();
+
+	protected override async Task OnInitializedAsync()
+	{
+		
+	}
+
+	private async Task CreateC()
+	{
+		await cityServices.Create(city);
+		navigationManager.NavigateTo("/cities");
+	} 
+}

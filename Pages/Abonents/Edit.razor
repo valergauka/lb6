@@ -1,0 +1,60 @@
+﻿@page "/abonent/{id:int}"
+@using lb6.Data
+@inject AbonentServices abonentServices
+@inject NavigationManager navigationManager
+<h1>Edit abonent</h1>
+<EditForm Model="abonent" OnValidSubmit="EditA">
+	<div class="form-group row">
+	  <label>FirstName</label>
+	  <div class="col-sm-8">
+		  <InputText @bind-Value="abonent.FirstName"/>
+	  </div>
+  </div>
+  <div class="form-group row">
+		<label>LastName</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.LastName"/>
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>SurName</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.SurName"/>
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>Address</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.Address"/>
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>Phone Number</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.PhoneNumber"/>
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Edit abonent</button>
+  </div>
+</EditForm>
+@code {
+	[Parameter] public int id { get; set; }
+	private Abonent abonent = new Abonent();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		abonent = await abonentServices.GetAbonent(id);
+            
+	}
+
+	private async Task EditA()
+	{
+		if (abonent == null)
+		{
+            navigationManager.NavigateTo("/abonents");
+		}
+		await abonentServices.Edit(abonent);
+		navigationManager.NavigateTo("/abonents");
+	}
+}

@@ -1,0 +1,56 @@
+﻿@page "/delete/{id:int}"
+@using lb6.Data
+@inject AbonentServices abonentServices
+@inject NavigationManager navigationManager
+<h3>Delete</h3>
+<EditForm Model="abonent" OnValidSubmit="DeleteA">
+    <InputNumber @bind-Value="abonent.Id" hidden />
+	<div class="form-group row">
+	  <label>FirstName</label>
+	  <div class="col-sm-8">
+		  <InputText @bind-Value="abonent.FirstName" disabled />
+	  </div>
+  </div>
+  <div class="form-group row">
+		<label>LastName</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.LastName" disabled />
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>SurName</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.SurName" disabled />
+		</div>
+  </div>
+  <div class="form-group row">
+		<label>Address</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.Address" disabled />
+		</div>
+  </div>
+  <div class="form-group row">
+		<label>Phone Number</label>
+		<div class="col-sm-8">
+			<InputText @bind-Value="abonent.PhoneNumber" disabled />
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Delete abonent</button>
+  </div>
+</EditForm>
+@code {
+	[Parameter] public int id { get; set; }
+	private Abonent abonent = new Abonent();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		abonent = await abonentServices.GetAbonent(id);
+	}
+
+	private async Task DeleteA()
+	{
+		await abonentServices.Delete(abonent);
+		navigationManager.NavigateTo("/abonents");
+	}
+}

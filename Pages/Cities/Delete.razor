@@ -1,0 +1,44 @@
+﻿@page "/delete/{id:int}"
+@using lb6.Data
+@inject CityServices cityServices
+@inject NavigationManager navigationManager
+<h3>Delete</h3>
+<EditForm Model="city" OnValidSubmit="DeleteC">
+   <InputNumber @bind-Value="city.Id" hidden />
+	<div class="form-group row">
+	  <label>Name</label>
+	  <div class="col-sm-8">
+		  <InputText @bind-Value="city.Name" disabled />
+	  </div>
+  </div>
+  <div class="form-group row">
+		<label>Code</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="city.Code" disabled />
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>Tariff</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="city.Tariff" disabled />
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Delete city</button>
+  </div>
+</EditForm>
+@code {
+	[Parameter] public int id { get; set; }
+	private City city = new City();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		city = await cityServices.GetCity(id);
+	}
+
+	private async Task DeleteC()
+	{
+		await cityServices.Delete(city);
+		navigationManager.NavigateTo("/cities");
+	}
+}

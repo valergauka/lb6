@@ -1,0 +1,61 @@
+﻿@page "/conversation"
+@using lb6.Data
+@inject ConversationServices conversacionServices
+@inject NavigationManager navigationManager
+
+<EditForm Model="conversation" OnValidSubmit="CreateC">
+	<div class="form-group row">
+		<label>Abonent</label>
+		<div class="col-sm-8">
+			<InputSelect @bind-Value="conversation.AbonentId">
+				<option>Choose abonent</option>
+				@foreach(var abonent in conversation)
+				{
+					<option value="@abonent.Id">@abonent.FirstName</option>
+				}
+			</InputSelect>
+		</div>
+  </div>
+  <div class="form-group row">
+		<label>City</label>
+		<div class="col-sm-8">
+			<InputSelect @bind-Value="conversation.CityId">
+				<option>Choose city</option>
+				@foreach(var city in conversation)
+				{
+					<option value="@city.Id">@city.FirstName</option>
+				}
+			</InputSelect>
+		</div>
+  </div>
+   <div class="form-group row">
+		<label>DateConversation</label>
+		<div class="col-sm-8">
+			<InputDate @bind-Value="conversation.DateConversation"/>
+		</div>
+  </div>
+  <div class="form-group row">
+		<label>Duration</label>
+		<div class="col-sm-8">
+			<InputNumber @bind-Value="conversation.Duration"/>
+		</div>
+  </div>
+  <div class="col-sm-8 pt-2">
+	  <button type="submit">Add conversation</button>
+  </div>
+</EditForm>
+
+
+@code {
+	private Conversation conversation = new Conversation();
+	protected override async Task OnInitializedAsync()
+	{
+		
+	}
+
+	private async Task CreateC()
+	{
+		await conversacionServices.Create(conversation);
+		navigationManager.NavigateTo("/infobooks");
+	} 
+}
